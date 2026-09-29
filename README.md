@@ -14,7 +14,7 @@ Final project for Image Processing & Computer Vision, MSU Denver, Spring 2026.
 |---|---|
 | ![Clear road result](overlay1.png) | ![Cyclist result](overlay2.png) |
 
-The pipeline highlights the lane markings in green on both scenes. The cyclist scene actually gives a cleaner result, while the clear road picks up some extra noise near the horizon from bright road signs.
+The pipeline highlights the lane markings in green on both scenes. It also has a known false positive: **sidewalks and curbs get detected as lanes.** Light-colored concrete is much brighter than asphalt, so it passes the brightness threshold just like lane paint, and because it sits in the lower part of the image, the region-of-interest mask doesn't remove it. The clear-road image also picks up some noise near the horizon from bright road signs.
 
 ## How it works
 
@@ -36,16 +36,17 @@ The pipeline highlights the lane markings in green on both scenes. The cyclist s
 
 ## Limitations & future work
 
+- **Sidewalks are misdetected as lanes.** Brightness alone can't tell white lane paint from light concrete.
 - The Hough transform still picks up extra lines from other bright objects, which is a common limitation of classical methods on real-world images.
 - **Next steps:**
   - Use HSV color thresholding to separate white and yellow lane paint from other bright objects.
-  - Use a trapezoid-shaped mask instead of a rectangle.
+  - Use a trapezoid-shaped mask that follows the road's perspective, cutting out the sidewalks along the edges.
   - Process video frames for real-time tracking.
   - Compare the results against a machine learning approach.
 
-## Tech
+## Tools & Libraries
 
-Python · OpenCV · NumPy · SciPy · Matplotlib · Google Colab
+Python · OpenCV · NumPy · Google Colab
 
 ## Run it yourself
 
